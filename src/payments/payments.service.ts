@@ -9,7 +9,7 @@ export class PaymentsService {
   private readonly stripe = new Stripe(envs.stripeSecret);
 
   async createPaymentSession(paymentSessionDto: PaymentSessionDto) {
-    const { currency, items } = paymentSessionDto;
+    const { currency, items, orderId } = paymentSessionDto;
 
     const line_items = items.map((item) => {
       return {
@@ -27,7 +27,9 @@ export class PaymentsService {
     const session = await this.stripe.checkout.sessions.create({
       //Colocar aquí el ID de mi orden
       payment_intent_data: {
-        metadata: {},
+        metadata: {
+          orderId: orderId,
+        },
       },
       line_items: line_items,
       mode: 'payment',
