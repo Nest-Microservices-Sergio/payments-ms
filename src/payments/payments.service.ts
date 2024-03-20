@@ -57,7 +57,8 @@ export class PaymentsService {
 
     switch (event.type) {
       case 'charge.succeeded':
-        console.log(event);
+      const chargeSucceeded = event.data.object;
+        console.log(chargeSucceeded.metadata.orderId);
         break;
       default:
         console.log(`Event ${event.type} not handled`);
