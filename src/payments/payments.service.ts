@@ -33,8 +33,8 @@ export class PaymentsService {
       },
       line_items: line_items,
       mode: 'payment',
-      success_url: 'http://localhost:3003/payments/success',
-      cancel_url: 'http://localhost:3003/payments/cancelled',
+      success_url: envs.stripeSuccessUrl,
+      cancel_url: envs.stripeCancelUrl,
     });
 
     return session;
@@ -43,13 +43,12 @@ export class PaymentsService {
   async stripeWebhook<T>(req: Request, res: Response): Promise<Stripe.Event> {
     const sig = req.headers['stripe-signature'];
     let event: Stripe.Event;
-    const endpointSecret = envs.stripeSecretEndpoint;
 
     try {
       event = this.stripe.webhooks.constructEvent(
         req['rawBody'],
         sig,
-        endpointSecret,
+        envs.stripeSecretEndpoint,
       );
     } catch (err) {
       res.status(400).send(`Webhook Error: ${err.message}`);
