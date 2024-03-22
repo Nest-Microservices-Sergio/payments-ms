@@ -37,7 +37,11 @@ export class PaymentsService {
       cancel_url: envs.stripeCancelUrl,
     });
 
-    return session;
+    return {
+      cancelUrl: session.cancel_url,
+      successurl: session.success_url,
+      url: session.url,
+    };
   }
 
   async stripeWebhook<T>(req: Request, res: Response): Promise<Stripe.Event> {
@@ -57,7 +61,7 @@ export class PaymentsService {
 
     switch (event.type) {
       case 'charge.succeeded':
-      const chargeSucceeded = event.data.object;
+        const chargeSucceeded = event.data.object;
         console.log(chargeSucceeded.metadata.orderId);
         break;
       default:
