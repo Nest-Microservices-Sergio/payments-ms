@@ -1,0 +1,18 @@
+steps:
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "-t",
+        "us-west2-docker.pkg.dev/store-microservices-418519/image-registry/payments-ms",
+        "-f",
+        "dockerfile.prod",
+        "--platform=linux/amd64",
+        ".",
+      ]
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "push",
+        "us-west2-docker.pkg.dev/store-microservices-418519/image-registry/payments-ms",
+      ]
